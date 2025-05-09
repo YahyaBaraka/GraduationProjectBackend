@@ -2,6 +2,7 @@ package com.example.graduationproject.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Cleanup;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,8 @@ public class ServiceProvider {
     private Long id;
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private String description;
     @Column(nullable = false)
     private String phone;
     @OneToOne(cascade = CascadeType.ALL)
