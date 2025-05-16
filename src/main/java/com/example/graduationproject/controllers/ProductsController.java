@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @RestController
 @RequestMapping("api/products/")
 @Log
@@ -22,8 +26,12 @@ public class ProductsController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Product> createServiceProvider(@RequestBody Product product) {
-        log.info("Creating product " + product);
-        return ResponseEntity.ok(productService.saveProduct(product));
+    public ResponseEntity<Product[]> createServiceProvider(@RequestBody Product[] products) {
+        List<Product> productList = new ArrayList<>();
+        for (Product product : products) {
+            log.info("Creating product " + product);
+            productList.add(productService.saveProduct(product));
+        }
+        return ResponseEntity.ok(productList.toArray(Product[]::new));
     }
 }
