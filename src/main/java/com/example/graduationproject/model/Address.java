@@ -15,7 +15,10 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "addressId")
     Long id;
+    @Column
     String city;
+    @Column
     String country;
+    @Column
     String street;
 }

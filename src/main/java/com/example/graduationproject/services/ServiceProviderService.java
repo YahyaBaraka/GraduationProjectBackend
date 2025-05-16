@@ -24,4 +24,8 @@ public class ServiceProviderService {
     public List<ServiceProvider> getProvidersByType(ProviderType providerType) {
         return serviceProviderRepository.getServiceProviderByType(providerType);
     }
+
+    public ServiceProvider addServiceProvider(ServiceProvider serviceProvider) {
+        return serviceProviderRepository.save(serviceProvider);
+    }
 }
