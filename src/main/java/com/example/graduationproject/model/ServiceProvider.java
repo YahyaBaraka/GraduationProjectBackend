@@ -6,6 +6,10 @@ import lombok.Cleanup;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "service_providers")
 @Data
@@ -21,6 +25,13 @@ public class ServiceProvider {
     private String description;
     @Column(nullable = false)
     private String phone;
+    @ManyToMany
+    @JoinTable(
+            name = "service_provider_product",
+            joinColumns = @JoinColumn(name = "service_provider_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> products = new HashSet<>();
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
