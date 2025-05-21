@@ -15,9 +15,11 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
+    @Column(nullable = false)
     private float latitude;
+    @Column(nullable = false)
     private float longitude;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 }

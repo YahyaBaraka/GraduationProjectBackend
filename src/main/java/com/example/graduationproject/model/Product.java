@@ -1,5 +1,6 @@
 package com.example.graduationproject.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,8 +21,11 @@ public class Product {
     private String name;
     @Column(nullable = false)
     private float price;
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProductType type;
     @Column(nullable = false)
     private Long barcode;
+    @Column(nullable = false)
+    private String imageUrl;
 }

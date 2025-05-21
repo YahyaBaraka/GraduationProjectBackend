@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -32,9 +34,19 @@ public class ServiceProviderController {
     public ResponseEntity<List<ServiceProvider>> getAllRestaurants() {
         return ResponseEntity.ok(serviceProviderService.getProvidersByType(ProviderType.RESTAURANT));
     }
-    @PostMapping("/all")
+    @PostMapping("/create/provider")
     public ResponseEntity<ServiceProvider> createServiceProvider(@RequestBody ServiceProvider serviceProvider) {
         log.info(serviceProvider.toString());
         return ResponseEntity.ok(serviceProviderService.addServiceProvider(serviceProvider));
+    }
+    @PostMapping("/create/providers")
+    public ResponseEntity<ServiceProvider[]> createServiceProvider(@RequestBody ServiceProvider[] serviceProviders) {
+        List<ServiceProvider> serviceProviderList = new ArrayList<>();
+        ServiceProvider[] serviceProviderArray = serviceProviders;
+        for(ServiceProvider serviceProvider : serviceProviders) {
+            log.info(serviceProvider.toString());
+            serviceProviderService.addServiceProvider(serviceProvider);
+        }
+        return ResponseEntity.ok(serviceProviderList.toArray(ServiceProvider[]::new));
     }
 }
