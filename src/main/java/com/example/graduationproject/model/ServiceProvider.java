@@ -19,8 +19,7 @@ public class ServiceProvider {
     @Column(nullable = false) private String phone;
 
     @ManyToMany(
-            cascade = { CascadeType.PERSIST, CascadeType.MERGE },
-            fetch  = FetchType.LAZY
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE }
     )
     @JoinTable(
             name                 = "service_provider_product",
@@ -29,7 +28,7 @@ public class ServiceProvider {
     )
     private Set<Product> products = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name = "location_id")
     private Location location;
 
