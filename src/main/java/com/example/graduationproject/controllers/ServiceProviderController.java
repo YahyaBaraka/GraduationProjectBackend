@@ -4,12 +4,10 @@ import com.example.graduationproject.model.ProviderType;
 import com.example.graduationproject.model.ServiceProvider;
 import com.example.graduationproject.services.ServiceProviderService;
 import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -44,8 +42,7 @@ public class ServiceProviderController {
         List<ServiceProvider> serviceProviderList = new ArrayList<>();
         for(ServiceProvider serviceProvider : serviceProviders) {
             log.info(serviceProvider.toString());
-            ServiceProvider serviceProviderResult = serviceProviderService.addServiceProvider(serviceProvider);
-            serviceProviderList.add(serviceProviderResult);
+           serviceProviderList.add(serviceProviderService.addServiceProvider(serviceProvider));
         }
         return ResponseEntity.ok(serviceProviderList.toArray(ServiceProvider[]::new));
     }

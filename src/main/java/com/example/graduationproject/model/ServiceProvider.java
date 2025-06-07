@@ -15,7 +15,7 @@ public class ServiceProvider {
     @Id @GeneratedValue private Long id;
 
     @Column(nullable = false) private String name;
-    @Column(nullable = false) private String description;
+    @Column(nullable = false, length = 2000) private String description;
     @Column(nullable = false) private String phone;
 
     @ManyToMany(
