@@ -1,8 +1,7 @@
 package com.example.graduationproject.services;
 
-import com.example.graduationproject.model.Recipes;
+import com.example.graduationproject.model.Recipe;
 import com.example.graduationproject.repositrories.RecipesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +14,11 @@ public class RecipesService {
         this.recipesRepository = recipesRepository;
     }
 
-    public List<Recipes> getAllRecipes() {
+    public List<Recipe> getAllRecipes() {
         return recipesRepository.findAll();
+    }
+
+    public Recipe saveRecipes(Recipe recipe) {
+        return recipesRepository.save(recipe);
     }
 }
