@@ -1,0 +1,31 @@
+package com.example.graduationproject.controllers;
+
+import com.example.graduationproject.services.LocationService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(LocationController.class)
+class LocationControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockitoBean
+    private LocationService locationService;
+
+    @Test
+    void getAllLocationsHandlesError() throws Exception {
+        when(locationService.getAllLocations()).thenThrow(new RuntimeException("fail"));
+
+        mockMvc.perform(get("/api/map/all"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.error").value("fail"));
+    }
+}

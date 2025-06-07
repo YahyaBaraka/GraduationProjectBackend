@@ -1,18 +1,20 @@
 package com.example.graduationproject.services;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
+import com.example.graduationproject.exceptions.ProductNotFoundException;
 import com.example.graduationproject.model.Product;
 import com.example.graduationproject.model.ProductType;
 import com.example.graduationproject.repositrories.ProductRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -26,38 +28,67 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
-    @Test
-    void saveProductReturnsSavedProduct() {
-        Product product = new Product(1L, "desc", "name", 10.0f, ProductType.UNKNOWN, 123L, "img");
-        when(productRepository.save(product)).thenReturn(product);
+    private Product sampleProduct;
 
-        Product result = productService.saveProduct(product);
-
-        assertSame(product, result);
-        verify(productRepository).save(product);
+    @BeforeEach
+    void setUp() {
+        sampleProduct = new Product();
+        sampleProduct.setId(1L);
+        sampleProduct.setName("Test");
+        sampleProduct.setDescription("Description");
+        sampleProduct.setPrice(10.0f);
+        sampleProduct.setType(ProductType.GLUTEN_FREE);
+        sampleProduct.setBarcode(123L);
+        sampleProduct.setImageUrl("url");
     }
 
     @Test
-    void saveProductLogsAndRethrowsOnError() {
-        Product product = new Product(1L, "desc", "name", 10.0f, ProductType.UNKNOWN, 123L, "img");
-        RuntimeException ex = new RuntimeException("boom");
-        when(productRepository.save(product)).thenThrow(ex);
+    void getProductByIdReturnsProduct() {
+        when(productRepository.findById(1L)).thenReturn(Optional.of(sampleProduct));
 
-        Logger logger = (Logger) LoggerFactory.getLogger(ProductService.class);
-        ListAppender<ILoggingEvent> appender = new ListAppender<>();
-        appender.start();
-        logger.addAppender(appender);
+        Product result = productService.getProductById(1L);
 
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> productService.saveProduct(product));
-        assertSame(ex, thrown);
+        assertNotNull(result);
+        assertEquals(sampleProduct, result);
+        verify(productRepository).findById(1L);
+    }
 
-        boolean errorLogged = appender.list.stream().anyMatch(e ->
-                e.getLevel() == Level.ERROR && e.getFormattedMessage().contains(ex.getMessage()));
-        boolean infoLogged = appender.list.stream().anyMatch(e ->
-                e.getLevel() == Level.INFO && e.getFormattedMessage().contains("Error in saving product"));
+    @Test
+    void getProductByIdThrowsWhenMissing() {
+        when(productRepository.findById(2L)).thenReturn(Optional.empty());
 
-        logger.detachAppender(appender);
-        assertTrue(errorLogged, "Error message not logged");
-        assertTrue(infoLogged, "Info message not logged");
+        assertThrows(ProductNotFoundException.class, () -> productService.getProductById(2L));
+        verify(productRepository).findById(2L);
+    }
+
+    @Test
+    void getAllProductsReturnsList() {
+        List<Product> list = Arrays.asList(sampleProduct);
+        when(productRepository.findAll()).thenReturn(list);
+
+        List<Product> result = productService.getAllProducts();
+
+        assertEquals(list, result);
+        verify(productRepository).findAll();
+    }
+
+    @Test
+    void saveProductDelegatesToRepository() {
+        when(productRepository.save(sampleProduct)).thenReturn(sampleProduct);
+
+        Product result = productService.saveProduct(sampleProduct);
+
+        assertEquals(sampleProduct, result);
+        verify(productRepository).save(sampleProduct);
+    }
+
+    @Test
+    void saveProductPropagatesException() {
+        RuntimeException ex = new RuntimeException("fail");
+        when(productRepository.save(sampleProduct)).thenThrow(ex);
+
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> productService.saveProduct(sampleProduct));
+        assertEquals(ex, thrown);
+        verify(productRepository).save(sampleProduct);
     }
 }
