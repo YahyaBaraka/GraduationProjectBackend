@@ -3,9 +3,7 @@ package com.example.graduationproject.controllers;
 import com.example.graduationproject.model.GeneralInformation;
 import com.example.graduationproject.services.GeneralInformationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +19,12 @@ public class GeneralInformationController {
     @GetMapping("")
     ResponseEntity<List<GeneralInformation>> getRecipes(){
         return ResponseEntity.ok(generalInformationService.getAllGeneralInformation());
+    }
+    @PostMapping("/create-all")
+    ResponseEntity<GeneralInformation[]> createRecipes(@RequestBody GeneralInformation[] generalInformation){
+        for (GeneralInformation info : generalInformation) {
+            generalInformationService.saveGeneralInformation(info);
+        }
+        return ResponseEntity.ok(generalInformation);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.graduationproject.controllers;
 
-import com.example.graduationproject.model.Recipes;
+import com.example.graduationproject.model.Recipe;
 import com.example.graduationproject.services.RecipesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class RecipesController {
         this.recipesService = recipesService;
     }
     @GetMapping("")
-    ResponseEntity<List<Recipes>> getRecipes(){
+    ResponseEntity<List<Recipe>> getRecipes(){
         return ResponseEntity.ok(recipesService.getAllRecipes());
     }
 }

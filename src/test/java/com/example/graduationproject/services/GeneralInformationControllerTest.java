@@ -4,7 +4,6 @@ import com.example.graduationproject.controllers.GeneralInformationController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,6 +19,10 @@ class GeneralInformationControllerTest {
 
     @MockitoBean
     private GeneralInformationService service;
+
+    GeneralInformationControllerTest(GeneralInformationService service) {
+        this.service = service;
+    }
 
     @Test
     void getInformationHandlesError() throws Exception {

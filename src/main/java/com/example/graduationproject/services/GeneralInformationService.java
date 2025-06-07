@@ -2,7 +2,6 @@ package com.example.graduationproject.services;
 
 import com.example.graduationproject.model.GeneralInformation;
 import com.example.graduationproject.repositrories.GeneralInformationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,5 +16,8 @@ public class GeneralInformationService {
 
     public List<GeneralInformation> getAllGeneralInformation(){
         return generalInformationRepository.findAll();
+    }
+    public GeneralInformation saveGeneralInformation(GeneralInformation generalInformation){
+        return generalInformationRepository.save(generalInformation);
     }
 }
