@@ -18,4 +18,7 @@ public class GeneralInformationService {
     public List<GeneralInformation> getAllGeneralInformation(){
         return generalInformationRepository.findAll();
     }
+    public GeneralInformation saveGeneralInformation(GeneralInformation generalInformation){
+        return generalInformationRepository.save(generalInformation);
+    }
 }

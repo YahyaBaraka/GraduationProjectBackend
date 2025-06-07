@@ -19,10 +19,4 @@ public class Recipe {
     private String content;
     @Column(nullable = false)
     private String imageUrl;
-
-    public Recipe(String content, String title, String imageUrl) {
-        this.content = content;
-        this.title = title;
-        this.imageUrl = imageUrl;
-    }
 }
