@@ -1,11 +1,14 @@
 package com.example.graduationproject.controllers;
 
+import com.example.graduationproject.exceptions.ProductNotFoundException;
 import com.example.graduationproject.model.Product;
 import com.example.graduationproject.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/products/")
-@Log
+@Slf4j
 public class ProductsController {
     private final ProductService productService;
 
@@ -27,7 +30,16 @@ public class ProductsController {
     }
     @GetMapping("/barcode/{barcode}")
     public ResponseEntity<List<Product>> getProductByBarcode(@PathVariable Long barcode) {
-        return ResponseEntity.ok(productService.getProductByBarcode(barcode));
+        try {
+            return ResponseEntity.ok(productService.getProductByBarcode(barcode));
+        } catch (ProductNotFoundException exception) {
+            log.error(exception.toString());
+            log.error("product with barcode : " + barcode + "can't be found");
+            throw exception;
+        } catch (Exception exception) {
+            log.error("product with barcode : " + barcode + "can't be found");
+            throw exception;
+        }
     }
     @PostMapping("/create")
     public ResponseEntity<Product[]> createServiceProvider(@Valid @RequestBody Product[] products) {
