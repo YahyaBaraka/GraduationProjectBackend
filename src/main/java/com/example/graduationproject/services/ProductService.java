@@ -6,6 +6,7 @@ import com.example.graduationproject.repositrories.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -37,7 +38,9 @@ public class ProductService {
     }
 
     public List<Product> getProductByBarcode(Long barcode) {
-        return productRepository.findProductByBarcode(barcode)
+        List<Product> products = productRepository.findProductByBarcode(barcode)
                 .orElseThrow(() -> new ProductNotFoundException(barcode));
+        log.info("received products with barcode : " + barcode + " is: " + products.toString());
+        return products;
     }
 }
