@@ -11,7 +11,8 @@ COPY src ./src
 RUN mvn clean package -DskipTests -B
 
 ### Stage 2: Run the JAR on a slim JDK 17 runtime, listening on port 8081 ###
-FROM eclipse-temurin:17-jdk-slim
+# Use the official Eclipse Temurin JDK 17 image (slim alias may not exist)
+FROM eclipse-temurin:17-jdk
 WORKDIR /app
 
 # Copy the packaged JAR from the build stage
