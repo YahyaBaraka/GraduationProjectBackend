@@ -26,11 +26,13 @@ public class ProductsController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+        log.info("Received Request to get product with id: " + id);
         return ResponseEntity.ok(productService.getProductById(id));
     }
     @GetMapping("/barcode/{barcode}")
     public ResponseEntity<List<Product>> getProductByBarcode(@PathVariable Long barcode) {
         try {
+            log.info("Received Request to get product with barcode: " + barcode);
             return ResponseEntity.ok(productService.getProductByBarcode(barcode));
         } catch (ProductNotFoundException exception) {
             log.error(exception.toString());
@@ -42,7 +44,8 @@ public class ProductsController {
         }
     }
     @PostMapping("/create")
-    public ResponseEntity<Product[]> createServiceProvider(@Valid @RequestBody Product[] products) {
+    public ResponseEntity<Product[]> createProducts(@Valid @RequestBody Product[] products) {
+        log.info("Received Request to create service providers with values: " + Arrays.toString(products));
         List<Product> productList = new ArrayList<>();
         for (Product product : products) {
             log.info("Creating product " + product);
