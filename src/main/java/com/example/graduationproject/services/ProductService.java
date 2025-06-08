@@ -35,4 +35,9 @@ public class ProductService {
             throw e;
         }
     }
+
+    public List<Product> getProductByBarcode(Long barcode) {
+        return productRepository.findProductByBarcode(barcode)
+                .orElseThrow(() -> new ProductNotFoundException(barcode));
+    }
 }

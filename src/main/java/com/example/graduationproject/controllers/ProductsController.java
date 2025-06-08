@@ -21,11 +21,14 @@ public class ProductsController {
         this.productService = productService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
-
+    @GetMapping("/barcode/{barcode}")
+    public ResponseEntity<List<Product>> getProductByBarcode(@PathVariable Long barcode) {
+        return ResponseEntity.ok(productService.getProductByBarcode(barcode));
+    }
     @PostMapping("/create")
     public ResponseEntity<Product[]> createServiceProvider(@Valid @RequestBody Product[] products) {
         List<Product> productList = new ArrayList<>();
