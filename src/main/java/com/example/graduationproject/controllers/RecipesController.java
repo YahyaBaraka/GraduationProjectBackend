@@ -21,12 +21,12 @@ public class RecipesController {
     }
     @PostMapping("/create")
     ResponseEntity<Recipe> createRecipes(Recipe recipes){
-        return ResponseEntity.ok(recipesService.saveRecipes(recipes));
+        return ResponseEntity.ok(recipesService.saveRecipe(recipes));
     }
     @PostMapping("/create-all")
     ResponseEntity<Recipe[]> createRecipes(@RequestBody Recipe[] recipes){
         for (Recipe recipe : recipes) {
-            recipesService.saveRecipes(recipe);
+            recipesService.saveRecipe(recipe);
         }
         return ResponseEntity.ok(recipes);
     }
