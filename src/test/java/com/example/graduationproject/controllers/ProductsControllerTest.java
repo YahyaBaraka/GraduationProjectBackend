@@ -46,7 +46,7 @@ class ProductsControllerTest {
     void getProductReturnsOk() throws Exception {
         when(productService.getProductById(1L)).thenReturn(sampleProduct());
 
-        mockMvc.perform(get("/api/products/1"))
+        mockMvc.perform(get("/api/products/id/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1));
     }
@@ -56,7 +56,7 @@ class ProductsControllerTest {
         when(productService.getProductById(2L))
                 .thenThrow(new ProductNotFoundException(2L));
 
-        mockMvc.perform(get("/api/products/2"))
+        mockMvc.perform(get("/api/products/id/2"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("Product not found with id: 2"));
     }

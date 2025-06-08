@@ -44,21 +44,21 @@ class ProductServiceTest {
 
     @Test
     void getProductByIdReturnsProduct() {
-        when(productRepository.findById(1L)).thenReturn(Optional.of(sampleProduct));
+        when(productRepository.findProductById(1L)).thenReturn(Optional.of(sampleProduct));
 
         Product result = productService.getProductById(1L);
 
         assertNotNull(result);
         assertEquals(sampleProduct, result);
-        verify(productRepository).findById(1L);
+        verify(productRepository).findProductById(1L);
     }
 
     @Test
     void getProductByIdThrowsWhenMissing() {
-        when(productRepository.findById(2L)).thenReturn(Optional.empty());
+        when(productRepository.findProductById(2L)).thenReturn(Optional.empty());
 
         assertThrows(ProductNotFoundException.class, () -> productService.getProductById(2L));
-        verify(productRepository).findById(2L);
+        verify(productRepository).findProductById(2L);
     }
 
     @Test
