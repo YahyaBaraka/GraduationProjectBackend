@@ -2,6 +2,7 @@ package com.example.graduationproject.controllers;
 
 import com.example.graduationproject.model.Recipe;
 import com.example.graduationproject.services.RecipesService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,11 @@ public class RecipesController {
         return ResponseEntity.ok(recipesService.getAllRecipes());
     }
     @PostMapping("/create")
-    ResponseEntity<Recipe> createRecipes(Recipe recipes){
+    ResponseEntity<Recipe> createRecipes(@Valid @RequestBody Recipe recipes){
         return ResponseEntity.ok(recipesService.saveRecipe(recipes));
     }
     @PostMapping("/create-all")
-    ResponseEntity<Recipe[]> createRecipes(@RequestBody Recipe[] recipes){
+    ResponseEntity<Recipe[]> createRecipes(@Valid @RequestBody Recipe[] recipes){
         for (Recipe recipe : recipes) {
             recipesService.saveRecipe(recipe);
         }

@@ -18,15 +18,11 @@ class GeneralInformationControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private GeneralInformationService service;
-
-    GeneralInformationControllerTest(GeneralInformationService service) {
-        this.service = service;
-    }
+    private GeneralInformationService generalInfoService;
 
     @Test
     void getInformationHandlesError() throws Exception {
-        when(service.getAllGeneralInformation()).thenThrow(new RuntimeException("fail"));
+        when(generalInfoService.getAllGeneralInformation()).thenThrow(new RuntimeException("fail"));
 
         mockMvc.perform(get("/api/general-information"))
                 .andExpect(status().isInternalServerError())

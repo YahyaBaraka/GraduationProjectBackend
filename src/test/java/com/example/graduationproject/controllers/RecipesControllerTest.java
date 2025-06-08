@@ -46,7 +46,7 @@ class RecipesControllerTest {
         mockMvc.perform(post("/api/recipes/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.error").value("fail"));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors").isArray());
     }
 }

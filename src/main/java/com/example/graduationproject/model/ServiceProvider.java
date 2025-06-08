@@ -1,6 +1,8 @@
 package com.example.graduationproject.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,9 +16,15 @@ import java.util.Set;
 public class ServiceProvider {
     @Id @GeneratedValue private Long id;
 
-    @Column(nullable = false) private String name;
-    @Column(nullable = false, length = 2000) private String description;
-    @Column(nullable = false) private String phone;
+    @Column(nullable = false)
+    @NotBlank(message = "name is required")
+    private String name;
+    @Column(nullable = false, length = 2000)
+    @NotBlank(message = "description is required")
+    private String description;
+    @Column(nullable = false)
+    @NotBlank(message = "phone is required")
+    private String phone;
 
     @ManyToMany(
             cascade = { CascadeType.PERSIST, CascadeType.MERGE }
@@ -30,11 +38,14 @@ public class ServiceProvider {
 
     @OneToOne()
     @JoinColumn(name = "location_id")
+    @NotNull(message = "location is required")
     private Location location;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
+    @NotNull(message = "type is required")
     private ProviderType type;
     @Column(nullable = false)
+    @NotBlank(message = "imageUrl is required")
     private String imageUrl;
 }

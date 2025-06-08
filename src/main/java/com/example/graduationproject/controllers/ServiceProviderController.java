@@ -3,13 +3,12 @@ package com.example.graduationproject.controllers;
 import com.example.graduationproject.model.ProviderType;
 import com.example.graduationproject.model.ServiceProvider;
 import com.example.graduationproject.services.ServiceProviderService;
+import jakarta.validation.Valid;
 import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -35,12 +34,12 @@ public class ServiceProviderController {
         return ResponseEntity.ok(serviceProviderService.getProvidersByType(ProviderType.RESTAURANT));
     }
     @PostMapping("/create/provider")
-    public ResponseEntity<ServiceProvider> createServiceProvider(@RequestBody ServiceProvider serviceProvider) {
+    public ResponseEntity<ServiceProvider> createServiceProvider(@Valid @RequestBody ServiceProvider serviceProvider) {
         log.info(serviceProvider.toString());
         return ResponseEntity.ok(serviceProviderService.addServiceProvider(serviceProvider));
     }
     @PostMapping("/create/providers")
-    public ResponseEntity<ServiceProvider[]> createServiceProvider(@RequestBody ServiceProvider[] serviceProviders) {
+    public ResponseEntity<ServiceProvider[]> createServiceProvider(@Valid @RequestBody ServiceProvider[] serviceProviders) {
         List<ServiceProvider> serviceProviderList = new ArrayList<>();
         for(ServiceProvider serviceProvider : serviceProviders) {
             log.info(serviceProvider.toString());

@@ -2,6 +2,7 @@ package com.example.graduationproject.controllers;
 
 import com.example.graduationproject.model.GeneralInformation;
 import com.example.graduationproject.services.GeneralInformationService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +18,11 @@ public class GeneralInformationController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<GeneralInformation>> getRecipes(){
+    ResponseEntity<List<GeneralInformation>> getGeneralInformation(){
         return ResponseEntity.ok(generalInformationService.getAllGeneralInformation());
     }
     @PostMapping("/create-all")
-    ResponseEntity<GeneralInformation[]> createRecipes(@RequestBody GeneralInformation[] generalInformation){
+    ResponseEntity<GeneralInformation[]> createGeneralInformation(@Valid @RequestBody GeneralInformation[] generalInformation){
         for (GeneralInformation info : generalInformation) {
             generalInformationService.saveGeneralInformation(info);
         }

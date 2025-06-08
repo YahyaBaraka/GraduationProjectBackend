@@ -53,7 +53,7 @@ class ServiceProviderControllerTest {
         mockMvc.perform(post("/api/service-provider/create/provider")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.error").value("fail"));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors").isArray());
     }
 }
