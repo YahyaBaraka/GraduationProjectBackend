@@ -2,10 +2,13 @@ package com.example.graduationproject.controllers;
 
 import com.example.graduationproject.model.Product;
 import com.example.graduationproject.services.ProductService;
+import jakarta.validation.Valid;
 import lombok.extern.java.Log;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -17,18 +20,20 @@ public class ProductsController {
     public ProductsController(ProductService productService) {
         this.productService = productService;
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Product[]> createServiceProvider(@RequestBody Product[] products) {
+    public ResponseEntity<Product[]> createServiceProvider(@Valid @RequestBody Product[] products) {
         List<Product> productList = new ArrayList<>();
         for (Product product : products) {
             log.info("Creating product " + product);
             productList.add(productService.saveProduct(product));
         }
+        log.info("Returning products: " + Arrays.toString(productList.toArray()));
         return ResponseEntity.ok(productList.toArray(Product[]::new));
     }
 }

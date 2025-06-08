@@ -1,6 +1,6 @@
-package com.example.graduationproject.services;
+package com.example.graduationproject.controllers;
 
-import com.example.graduationproject.controllers.GeneralInformationController;
+import com.example.graduationproject.services.GeneralInformationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

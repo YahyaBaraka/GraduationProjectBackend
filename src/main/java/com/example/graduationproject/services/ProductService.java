@@ -31,7 +31,7 @@ public class ProductService {
             return productRepository.save(product);
         } catch (Exception e) {
             log.error(e.getMessage());
-            log.info("Error in saving product{}", product);
+            log.error("Error in saving product{}", product);
             throw e;
         }
     }

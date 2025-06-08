@@ -41,7 +41,7 @@ class RecipesControllerTest {
 
     @Test
     void createRecipesHandlesError() throws Exception {
-        when(recipesService.saveRecipes(sampleRecipe())).thenThrow(new RuntimeException("fail"));
+        when(recipesService.saveRecipe(sampleRecipe())).thenThrow(new RuntimeException("fail"));
 
         mockMvc.perform(post("/api/recipes/create")
                         .contentType(MediaType.APPLICATION_JSON)

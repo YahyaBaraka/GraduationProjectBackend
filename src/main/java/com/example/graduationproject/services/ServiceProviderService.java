@@ -7,10 +7,8 @@ import com.example.graduationproject.model.ServiceProvider;
 import com.example.graduationproject.repositrories.LocationRepository;
 import com.example.graduationproject.repositrories.ProductRepository;
 import com.example.graduationproject.repositrories.ServiceProviderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,8 +16,8 @@ import java.util.Set;
 @Service
 public class ServiceProviderService {
     private final ServiceProviderRepository serviceProviderRepository;
-    private ProductRepository productRepository;
-    private LocationRepository locationRepository;
+    private final ProductRepository productRepository;
+    private final LocationRepository locationRepository;
 
     public ServiceProviderService(ServiceProviderRepository serviceProviderRepository, ProductRepository productRepository, LocationRepository locationRepository) {
         this.serviceProviderRepository = serviceProviderRepository;
@@ -42,7 +40,7 @@ public class ServiceProviderService {
                     product.getDescription(),
                     product.getPrice(),
                     product.getType()).ifPresentOrElse(
-                    existing -> products.add(existing),
+                    products::add,
                     () -> products.add(productRepository.save(product))
             );
         }
