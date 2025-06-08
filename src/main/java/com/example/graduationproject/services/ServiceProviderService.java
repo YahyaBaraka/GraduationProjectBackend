@@ -45,10 +45,7 @@ public class ServiceProviderService {
             );
         }
 
-        Location loc = locationRepository
-                .findLocationByLongitudeAndLatitude(serviceProvider.getLocation().getLongitude(),
-                        serviceProvider.getLocation().getLatitude())
-                .orElseGet(() -> locationRepository.save(serviceProvider.getLocation()));
+        Location loc = locationRepository.save(serviceProvider.getLocation());
 
         serviceProvider.setLocation(loc);
 
