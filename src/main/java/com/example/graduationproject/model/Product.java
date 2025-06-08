@@ -17,7 +17,6 @@ import org.hibernate.validator.constraints.URL;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(message="id is required")
     private Long id;
     @Column(nullable = false)
     @NotBlank(message="description is required")

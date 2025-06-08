@@ -15,8 +15,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String,Object>> handleValidation(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult().getFieldErrors().stream()
+    public ResponseEntity<Map<String,Object>> handleValidation(MethodArgumentNotValidException methodArgumentNotValidException) {
+        List<String> errors = methodArgumentNotValidException.getBindingResult().getFieldErrors().stream()
                 .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
                 .toList();
         Map<String,Object> body = Map.of(
@@ -27,8 +27,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
-    public ResponseEntity<Map<String, Object>> handleHandlerValidation(HandlerMethodValidationException ex) {
-        List<String> errors = ex.getAllErrors().stream()
+    public ResponseEntity<Map<String, Object>> handleMethodValidationException(HandlerMethodValidationException methodValidationException) {
+        List<String> errors = methodValidationException.getAllErrors().stream()
                 .map(error -> {
                     if (error instanceof FieldError fe) {
                         return fe.getField() + ": " + fe.getDefaultMessage();
