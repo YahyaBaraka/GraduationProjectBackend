@@ -3,9 +3,8 @@ package com.example.graduationproject.controllers;
 import com.example.graduationproject.model.Recipe;
 import com.example.graduationproject.services.RecipesService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -19,5 +18,16 @@ public class RecipesController {
     @GetMapping("")
     ResponseEntity<List<Recipe>> getRecipes(){
         return ResponseEntity.ok(recipesService.getAllRecipes());
+    }
+    @PostMapping("/create")
+    ResponseEntity<Recipe> createRecipes(Recipe recipes){
+        return ResponseEntity.ok(recipesService.saveRecipes(recipes));
+    }
+    @PostMapping("/create-all")
+    ResponseEntity<Recipe[]> createRecipes(@RequestBody Recipe[] recipes){
+        for (Recipe recipe : recipes) {
+            recipesService.saveRecipes(recipe);
+        }
+        return ResponseEntity.ok(recipes);
     }
 }

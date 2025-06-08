@@ -1,9 +1,9 @@
 package com.example.graduationproject.services;
 
+import com.example.graduationproject.exceptions.ProductNotFoundException;
 import com.example.graduationproject.model.Product;
 import com.example.graduationproject.repositrories.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +18,8 @@ public class ProductService {
     }
 
     public Product getProductById(Long id){
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     public List<Product> getAllProducts(){
