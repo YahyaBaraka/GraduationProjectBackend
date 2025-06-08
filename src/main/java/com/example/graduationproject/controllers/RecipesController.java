@@ -21,8 +21,8 @@ public class RecipesController {
         return ResponseEntity.ok(recipesService.getAllRecipes());
     }
     @PostMapping("/create")
-    ResponseEntity<Recipe> createRecipe(@Valid @RequestBody Recipe recipes){
-        return ResponseEntity.ok(recipesService.saveRecipe(recipes));
+    ResponseEntity<Recipe> createRecipe(@Valid @RequestBody Recipe recipe){
+        return ResponseEntity.ok(recipesService.saveRecipe(recipe));
     }
     @PostMapping("/create-all")
     ResponseEntity<Recipe[]> createRecipes(@Valid @RequestBody Recipe[] recipes){
