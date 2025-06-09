@@ -43,9 +43,14 @@ public class ProductsController {
             throw exception;
         }
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<Product>> getAllProducts() {
+        log.info("Received Request to get all product records");
+        return ResponseEntity.ok(productService.getAllProducts());
+    }
     @PostMapping("/create")
     public ResponseEntity<Product[]> createProducts(@Valid @RequestBody Product[] products) {
-        log.info("Received Request to create service providers with values: " + Arrays.toString(products));
+        log.info("Received Request to create products with values: " + Arrays.toString(products));
         List<Product> productList = new ArrayList<>();
         for (Product product : products) {
             log.info("Creating product " + product);

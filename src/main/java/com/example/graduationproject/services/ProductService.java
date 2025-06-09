@@ -24,7 +24,14 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts(){
-        return productRepository.findAll();
+        try {
+            List<Product> products = productRepository.findAll();
+            log.info("Fetching all products succeeded");
+            return products;
+        } catch (Exception exception) {
+            log.error("Fetching all products failed");
+            throw exception;
+        }
     }
 
     public Product saveProduct(Product product){
