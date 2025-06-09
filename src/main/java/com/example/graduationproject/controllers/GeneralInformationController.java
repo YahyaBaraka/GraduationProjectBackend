@@ -27,7 +27,7 @@ public class GeneralInformationController {
     }
     @PostMapping("/create-all")
     ResponseEntity<GeneralInformation[]> createGeneralInformation(@Valid @RequestBody GeneralInformation[] generalInformation){
-        log.info("Received Request to create general information with values: " + Arrays.toString(generalInformation));
+        log.info("Received Request to create general information with values: {}", Arrays.toString(generalInformation));
         for (GeneralInformation info : generalInformation) {
             generalInformationService.saveGeneralInformation(info);
         }

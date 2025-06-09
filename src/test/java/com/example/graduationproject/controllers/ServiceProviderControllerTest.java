@@ -1,8 +1,12 @@
 package com.example.graduationproject.controllers;
 
+import com.example.graduationproject.model.Address;
+import com.example.graduationproject.model.Location;
 import com.example.graduationproject.model.ProviderType;
+import com.example.graduationproject.exceptions.ServiceProviderConflictException;
 import com.example.graduationproject.model.ServiceProvider;
 import com.example.graduationproject.services.ServiceProviderService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,6 +25,9 @@ class ServiceProviderControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     @MockitoBean
     private ServiceProviderService serviceProviderService;
 
@@ -32,6 +39,17 @@ class ServiceProviderControllerTest {
         sp.setPhone("123");
         sp.setType(ProviderType.MARKET);
         sp.setImageUrl("img");
+        Address addr = new Address();
+        addr.setCity("City");
+        addr.setCountry("Country");
+        addr.setStreet("Street");
+
+        Location loc = new Location();
+        loc.setLatitude(1.0f);
+        loc.setLongitude(1.0f);
+        loc.setAddress(addr);
+
+        sp.setLocation(loc);
         return sp;
     }
 
@@ -55,5 +73,19 @@ class ServiceProviderControllerTest {
                         .content("{}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").isArray());
+    }
+
+    @Test
+    void createServiceProviderConflict() throws Exception {
+        when(serviceProviderService.addServiceProvider(sampleProvider()))
+                .thenThrow(new ServiceProviderConflictException("duplicate"));
+
+        String validJson = mapper.writeValueAsString(sampleProvider());
+
+        mockMvc.perform(post("/api/service-provider/create/provider")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(validJson))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.error").value("duplicate"));
     }
 }

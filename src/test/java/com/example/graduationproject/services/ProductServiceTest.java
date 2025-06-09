@@ -1,5 +1,6 @@
 package com.example.graduationproject.services;
 
+import com.example.graduationproject.exceptions.ProductConflictException;
 import com.example.graduationproject.exceptions.ProductNotFoundException;
 import com.example.graduationproject.model.Product;
 import com.example.graduationproject.model.ProductType;
@@ -90,5 +91,22 @@ class ProductServiceTest {
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> productService.saveProduct(sampleProduct));
         assertEquals(ex, thrown);
         verify(productRepository).save(sampleProduct);
+    }
+    @Test
+    void saveProductThrowsWhenDuplicate() {
+        when(productRepository.findProductByBarcodeAndNameAndDescriptionAndPriceAndType(
+                sampleProduct.getBarcode(),
+                sampleProduct.getName(),
+                sampleProduct.getDescription(),
+                sampleProduct.getPrice(),
+                sampleProduct.getType())).thenReturn(Optional.of(sampleProduct));
+
+        assertThrows(ProductConflictException.class, () -> productService.saveProduct(sampleProduct));
+        verify(productRepository).findProductByBarcodeAndNameAndDescriptionAndPriceAndType(
+                sampleProduct.getBarcode(),
+                sampleProduct.getName(),
+                sampleProduct.getDescription(),
+                sampleProduct.getPrice(),
+                sampleProduct.getType());
     }
 }

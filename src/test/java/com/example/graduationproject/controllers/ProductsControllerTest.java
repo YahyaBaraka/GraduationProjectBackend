@@ -1,5 +1,6 @@
 package com.example.graduationproject.controllers;
 
+import com.example.graduationproject.exceptions.ProductConflictException;
 import com.example.graduationproject.exceptions.ProductNotFoundException;
 import com.example.graduationproject.model.Product;
 import com.example.graduationproject.model.ProductType;
@@ -85,5 +86,18 @@ class ProductsControllerTest {
                         .content(validJson))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.error").value("fail"));
+    }
+    @Test
+    void createProductsConflict() throws Exception {
+        when(productService.saveProduct(any(Product.class)))
+                .thenThrow(new ProductConflictException("duplicate"));
+
+        String validJson = mapper.writeValueAsString(new Product[]{ sampleProduct() });
+
+        mockMvc.perform(post("/api/products/create")
+                        .contentType(APPLICATION_JSON)
+                        .content(validJson))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.error").value("duplicate"));
     }
 }

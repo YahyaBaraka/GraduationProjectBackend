@@ -29,7 +29,7 @@ public class RecipesController {
     }
     @PostMapping("/create-all")
     ResponseEntity<Recipe[]> createRecipes(@Valid @RequestBody Recipe[] recipes){
-        log.info("Received Request to create recipes with values: " + Arrays.toString(recipes));
+        log.info("Received Request to create recipes with values: {}", Arrays.toString(recipes));
         for (Recipe recipe : recipes) {
             recipesService.saveRecipe(recipe);
         }

@@ -64,6 +64,27 @@ public class GlobalExceptionHandler {
         body.put("error", productNotFoundException.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(ProductConflictException.class)
+    public ResponseEntity<Map<String, String>> handleProductConflict(ProductConflictException productConflictException) {
+        log.error("Received error exception of type ProductConflictException");
+        log.error("Error message is" + productConflictException.getMessage());
+        log.error("Error Cause is" + productConflictException.getCause());
+
+        Map<String, String> body = new HashMap<>();
+        body.put("error", productConflictException.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ServiceProviderConflictException.class)
+    public ResponseEntity<Map<String, String>> handleServiceProviderConflict(ServiceProviderConflictException serviceProviderConflictException) {
+        log.error("Received error exception of type ServiceProviderConflictException");
+        log.error("Error message is" + serviceProviderConflictException.getMessage());
+        log.error("Error Cause is" + serviceProviderConflictException.getCause());
+
+        Map<String, String> body = new HashMap<>();
+        body.put("error", serviceProviderConflictException.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneric(Exception exception) {

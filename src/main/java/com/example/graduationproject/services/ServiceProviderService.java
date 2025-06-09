@@ -1,5 +1,6 @@
 package com.example.graduationproject.services;
 
+import com.example.graduationproject.exceptions.ServiceProviderConflictException;
 import com.example.graduationproject.model.Location;
 import com.example.graduationproject.model.Product;
 import com.example.graduationproject.model.ProviderType;
@@ -33,6 +34,14 @@ public class ServiceProviderService {
     }
 
     public ServiceProvider addServiceProvider(ServiceProvider serviceProvider) {
+        serviceProviderRepository
+                .findServiceProviderByNameAndDescriptionAndPhoneAndType(
+                        serviceProvider.getName(),
+                        serviceProvider.getDescription(),
+                        serviceProvider.getPhone(),
+                        serviceProvider.getType())
+                .ifPresent(p -> { throw new ServiceProviderConflictException("Service provider already exists"); });
+
         Set<Product> products = new HashSet<>();
         for(Product product : serviceProvider.getProducts()) {
             productRepository.findProductByBarcodeAndNameAndDescriptionAndPriceAndType(product.getBarcode(),

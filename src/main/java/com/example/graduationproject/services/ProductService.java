@@ -1,5 +1,6 @@
 package com.example.graduationproject.services;
 
+import com.example.graduationproject.exceptions.ProductConflictException;
 import com.example.graduationproject.exceptions.ProductNotFoundException;
 import com.example.graduationproject.model.Product;
 import com.example.graduationproject.repositrories.ProductRepository;
@@ -34,7 +35,18 @@ public class ProductService {
         }
     }
 
+
     public Product saveProduct(Product product){
+        productRepository
+                .findProductByBarcodeAndNameAndDescriptionAndPriceAndType(
+                        product.getBarcode(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getPrice(),
+                        product.getType())
+                .ifPresent(p -> {
+                    throw new ProductConflictException("Product already exists");
+                });
         try {
             return productRepository.save(product);
         } catch (Exception e) {

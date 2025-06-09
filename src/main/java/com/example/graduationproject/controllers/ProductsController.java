@@ -26,20 +26,20 @@ public class ProductsController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-        log.info("Received Request to get product with id: " + id);
+        log.info("Received Request to get product with id: {}", id);
         return ResponseEntity.ok(productService.getProductById(id));
     }
     @GetMapping("/barcode/{barcode}")
     public ResponseEntity<List<Product>> getProductByBarcode(@PathVariable Long barcode) {
         try {
-            log.info("Received Request to get product with barcode: " + barcode);
+            log.info("Received Request to get product with barcode: {}", barcode);
             return ResponseEntity.ok(productService.getProductByBarcode(barcode));
         } catch (ProductNotFoundException exception) {
-            log.error(exception.toString());
-            log.error("product with barcode : " + barcode + "can't be found");
+            log.error("{}", exception.toString());
+            log.error("product with barcode : {} can't be found", barcode);
             throw exception;
         } catch (Exception exception) {
-            log.error("product with barcode : " + barcode + "can't be found");
+            log.error("product with barcode : {} can't be found", barcode);
             throw exception;
         }
     }
@@ -50,13 +50,13 @@ public class ProductsController {
     }
     @PostMapping("/create")
     public ResponseEntity<Product[]> createProducts(@Valid @RequestBody Product[] products) {
-        log.info("Received Request to create products with values: " + Arrays.toString(products));
+        log.info("Received Request to create products with values: {}", Arrays.toString(products));
         List<Product> productList = new ArrayList<>();
         for (Product product : products) {
-            log.info("Creating product " + product);
+            log.info("Creating product {}", product);
             productList.add(productService.saveProduct(product));
         }
-        log.info("Returning products: " + Arrays.toString(productList.toArray()));
+        log.info("Returning products: {}", Arrays.toString(productList.toArray()));
         return ResponseEntity.ok(productList.toArray(Product[]::new));
     }
 }
