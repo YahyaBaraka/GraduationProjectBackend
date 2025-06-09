@@ -8,6 +8,7 @@ import com.example.graduationproject.model.ServiceProvider;
 import com.example.graduationproject.repositrories.LocationRepository;
 import com.example.graduationproject.repositrories.ProductRepository;
 import com.example.graduationproject.repositrories.ServiceProviderRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class ServiceProviderService {
     private final ServiceProviderRepository serviceProviderRepository;
     private final ProductRepository productRepository;
@@ -27,7 +29,12 @@ public class ServiceProviderService {
     }
 
     public List<ServiceProvider> getAllProviders() {
-        return serviceProviderRepository.findAll();
+        try {
+            return serviceProviderRepository.findAll();
+        } catch (Exception exception) {
+            log.error("Fetching all service providers failed");
+            throw exception;
+        }
     }
     public List<ServiceProvider> getProvidersByType(ProviderType providerType) {
         return serviceProviderRepository.getServiceProviderByType(providerType);

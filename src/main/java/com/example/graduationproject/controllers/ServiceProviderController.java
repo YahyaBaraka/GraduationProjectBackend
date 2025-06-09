@@ -37,6 +37,11 @@ public class ServiceProviderController {
         log.info("Received Request to get service providers with type RESTAURANT");
         return ResponseEntity.ok(serviceProviderService.getProvidersByType(ProviderType.RESTAURANT));
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<ServiceProvider>> getAllServiceProviders() {
+        log.info("Received Request to get all service providers");
+        return ResponseEntity.ok(serviceProviderService.getAllProviders());
+    }
     @PostMapping("/create/provider")
     public ResponseEntity<ServiceProvider> createServiceProvider(@Valid @RequestBody ServiceProvider serviceProvider) {
         log.info("Received Request to create service provider with values:" + serviceProvider);
