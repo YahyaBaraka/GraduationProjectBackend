@@ -58,4 +58,17 @@ public class ServiceProviderController {
         }
         return ResponseEntity.ok(serviceProviderList.toArray(ServiceProvider[]::new));
     }
+    @PostMapping("/{id}")
+    public ResponseEntity<ServiceProvider> updateServiceProvider(@PathVariable Long id,
+                                                                 @Valid @RequestBody ServiceProvider serviceProvider) {
+        log.info("Received Request to update service provider with id: " + id);
+        return ResponseEntity.ok(serviceProviderService.updateServiceProvider(id, serviceProvider));
+    }
+
+    @PostMapping("/{id}/products")
+    public ResponseEntity<ServiceProvider> updateServiceProviderProducts(@PathVariable Long id,
+                                                                         @Valid @RequestBody ServiceProvider serviceProvider) {
+        log.info("Received Request to update products for service provider " + id);
+        return ResponseEntity.ok(serviceProviderService.updateServiceProviderProducts(id, serviceProvider.getProducts()));
+    }
 }

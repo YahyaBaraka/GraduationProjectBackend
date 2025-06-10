@@ -4,7 +4,6 @@ import com.example.graduationproject.exceptions.ProductNotFoundException;
 import com.example.graduationproject.model.Product;
 import com.example.graduationproject.services.ProductService;
 import jakarta.validation.Valid;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,5 +57,11 @@ public class ProductsController {
         }
         log.info("Returning products: {}", Arrays.toString(productList.toArray()));
         return ResponseEntity.ok(productList.toArray(Product[]::new));
+    }
+    @PostMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id,
+                                                 @Valid @RequestBody Product product) {
+        log.info("Received Request to update product with id: {}", id);
+        return ResponseEntity.ok(productService.updateProduct(id, product));
     }
 }

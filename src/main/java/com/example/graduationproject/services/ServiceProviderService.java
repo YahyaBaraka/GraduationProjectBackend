@@ -68,4 +68,48 @@ public class ServiceProviderService {
         serviceProvider.setProducts(products);
         return serviceProviderRepository.save(serviceProvider);
     }
+    public ServiceProvider updateServiceProvider(Long id, ServiceProvider serviceProvider) {
+        ServiceProvider existing = serviceProviderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Service provider not found"));
+
+        serviceProviderRepository
+                .findServiceProviderByNameAndDescriptionAndPhoneAndType(
+                        serviceProvider.getName(),
+                        serviceProvider.getDescription(),
+                        serviceProvider.getPhone(),
+                        serviceProvider.getType())
+                .filter(sp -> !sp.getId().equals(id))
+                .ifPresent(p -> { throw new ServiceProviderConflictException("Service provider already exists"); });
+
+        existing.setName(serviceProvider.getName());
+        existing.setDescription(serviceProvider.getDescription());
+        existing.setPhone(serviceProvider.getPhone());
+        existing.setType(serviceProvider.getType());
+        existing.setImageUrl(serviceProvider.getImageUrl());
+
+        Location loc = locationRepository.save(serviceProvider.getLocation());
+        existing.setLocation(loc);
+
+        return serviceProviderRepository.save(existing);
+    }
+
+    public ServiceProvider updateServiceProviderProducts(Long id, Set<Product> products) {
+        ServiceProvider provider = serviceProviderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Service provider not found"));
+
+        Set<Product> result = new HashSet<>();
+        for (Product product : products) {
+            productRepository.findProductByBarcodeAndNameAndDescriptionAndPriceAndType(
+                            product.getBarcode(),
+                            product.getName(),
+                            product.getDescription(),
+                            product.getPrice(),
+                            product.getType())
+                    .ifPresentOrElse(result::add,
+                            () -> result.add(productRepository.save(product)));
+        }
+
+        provider.setProducts(result);
+        return serviceProviderRepository.save(provider);
+    }
 }

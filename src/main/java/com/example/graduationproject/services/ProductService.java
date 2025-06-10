@@ -7,7 +7,6 @@ import com.example.graduationproject.repositrories.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -61,5 +60,30 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException(barcode));
         log.info("received products with barcode : " + barcode + " is: " + products.toString());
         return products;
+    }
+
+    public Product updateProduct(Long id, Product product) {
+        Product existing = getProductById(id);
+
+        productRepository
+                .findProductByBarcodeAndNameAndDescriptionAndPriceAndType(
+                        product.getBarcode(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getPrice(),
+                        product.getType())
+                .filter(p -> !p.getId().equals(id))
+                .ifPresent(p -> {
+                    throw new ProductConflictException("Product already exists");
+                });
+
+        existing.setName(product.getName());
+        existing.setDescription(product.getDescription());
+        existing.setPrice(product.getPrice());
+        existing.setType(product.getType());
+        existing.setBarcode(product.getBarcode());
+        existing.setImageUrl(product.getImageUrl());
+
+        return productRepository.save(existing);
     }
 }
