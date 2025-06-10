@@ -36,7 +36,7 @@ class ServiceProviderControllerTest {
         sp.setId(1L);
         sp.setName("Name");
         sp.setDescription("Desc");
-        sp.setPhone("123");
+        sp.setPhone("0799999999");
         sp.setType(ProviderType.MARKET);
         sp.setImageUrl("img");
         Address addr = new Address();

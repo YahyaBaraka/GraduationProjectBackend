@@ -41,7 +41,7 @@ class ServiceProviderServiceTest {
         sampleProvider.setId(1L);
         sampleProvider.setName("Name");
         sampleProvider.setDescription("Desc");
-        sampleProvider.setPhone("123");
+        sampleProvider.setPhone("0799999999");
         sampleProvider.setType(ProviderType.MARKET);
         sampleProvider.setImageUrl("img");
     }

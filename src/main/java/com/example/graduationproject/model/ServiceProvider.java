@@ -3,6 +3,7 @@ package com.example.graduationproject.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +25,10 @@ public class ServiceProvider {
     private String description;
     @Column(nullable = false)
     @NotBlank(message = "phone is required")
+    @Pattern(
+            regexp = "^(?:\\+962|0)7\\d{8}$",
+            message = "phone must be a valid Jordanian mobile number"
+    )
     private String phone;
 
     @ManyToMany(
